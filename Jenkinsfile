@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Pull') {
       steps {
-        git(url: 'https://github.com/ssrksiva/testpipeline6.git', branch: 'master', poll: true)
+        git(url: 'https://github.com/ssrksiva/testpipeline6.git', branch: 'develop', poll: true)
       }
     }
 
@@ -15,6 +15,7 @@ pipeline {
 
     stage('Clean') {
       steps {
+	    sh 'chmod +x mvnw'
         sh './mvnw -ntp clean -P-webpack'
       }
     }
