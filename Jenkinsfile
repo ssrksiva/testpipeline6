@@ -15,7 +15,7 @@ pipeline {
 
     stage('Clean') {
       steps {
-	    sh 'chmod +x mvnw'
+        sh 'chmod +x mvnw'
         sh './mvnw -ntp clean -P-webpack'
       }
     }
@@ -67,7 +67,7 @@ pipeline {
       steps {
         sh 'git config --global user.name "ssrksiva"'
         sh 'git config --global user.email "sssrkbsc@gmail.com"'
-        sh 'git tag -a tagName3 -m "test-admin3"'
+        sh 'git tag -a tagName4 -m "test-admin4"'
         sh 'git commit -am "Merged develop branch to release"'
         sh 'git merge -s ours develop --allow-unrelated-histories'
         withCredentials(bindings: [usernamePassword(credentialsId: 'testgithubcred', usernameVariable: 'user', passwordVariable: 'pass')]) {
@@ -75,7 +75,7 @@ pipeline {
             env.encodedPass=URLEncoder.encode(pass, "UTF-8")
           }
 
-          sh 'git push https://${user}:${encodedPass}@github.com/${user}/testpipeline6.git HEAD:release -f'
+          sh 'git push https://${user}:${encodedPass}@github.com/${user}/testpipeline6.git HEAD:master -f'
         }
 
       }
