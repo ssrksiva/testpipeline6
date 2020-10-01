@@ -15,7 +15,6 @@ pipeline {
 
     stage('Clean') {
       steps {
-        sh 'chmod +x mvnw'
         sh './mvnw -ntp clean -P-webpack'
       }
     }
@@ -70,15 +69,18 @@ pipeline {
         sh 'git tag -a tagName3 -m "test-admin3"'
         sh 'git commit -am "Merged develop branch to release"'
         sh 'git merge -s ours develop --allow-unrelated-histories'
-		 withCredentials(bindings: [usernamePassword(credentialsId: 'testgithubcred', usernameVariable: 'user', passwordVariable: 'pass')]) {
+        withCredentials(bindings: [usernamePassword(credentialsId: 'testgithubcred', usernameVariable: 'user', passwordVariable: 'pass')]) {
           script {
             env.encodedPass=URLEncoder.encode(pass, "UTF-8")
           }
+
           sh 'git push https://${user}:${encodedPass}@github.com/${user}/testpipeline6.git HEAD:release -f'
         }
+
       }
     }
-	 stage('Deliver for feature') {
+
+    stage('Deliver for feature') {
       when {
         branch 'feature*'
       }
@@ -88,15 +90,18 @@ pipeline {
         sh 'git tag -a tagName3 -m "test-admin3"'
         sh 'git commit -am "Merged feature branch to develop"'
         sh 'git merge -s ours feature* --allow-unrelated-histories'
-		 withCredentials(bindings: [usernamePassword(credentialsId: 'testgithubcred', usernameVariable: 'user', passwordVariable: 'pass')]) {
+        withCredentials(bindings: [usernamePassword(credentialsId: 'testgithubcred', usernameVariable: 'user', passwordVariable: 'pass')]) {
           script {
             env.encodedPass=URLEncoder.encode(pass, "UTF-8")
           }
+
           sh 'git push https://${user}:${encodedPass}@github.com/${user}/testpipeline6.git HEAD:develop -f'
         }
+
       }
     }
-	stage('Deliver for hotfix') {
+
+    stage('Deliver for hotfix') {
       when {
         branch 'hotfix*'
       }
@@ -106,15 +111,18 @@ pipeline {
         sh 'git tag -a tagName3 -m "test-admin3"'
         sh 'git commit -am "Merged hotfix branch to master"'
         sh 'git merge -s ours hotfix* --allow-unrelated-histories'
-		 withCredentials(bindings: [usernamePassword(credentialsId: 'testgithubcred', usernameVariable: 'user', passwordVariable: 'pass')]) {
+        withCredentials(bindings: [usernamePassword(credentialsId: 'testgithubcred', usernameVariable: 'user', passwordVariable: 'pass')]) {
           script {
             env.encodedPass=URLEncoder.encode(pass, "UTF-8")
           }
+
           sh 'git push https://${user}:${encodedPass}@github.com/${user}/testpipeline6.git HEAD:master -f'
         }
+
       }
     }
-	stage('Deliver for bugfix') {
+
+    stage('Deliver for bugfix') {
       when {
         branch 'bugfix*'
       }
@@ -124,15 +132,18 @@ pipeline {
         sh 'git tag -a tagName3 -m "test-admin3"'
         sh 'git commit -am "Merged bugfix branch to develop"'
         sh 'git merge -s ours bugfix* --allow-unrelated-histories'
-		 withCredentials(bindings: [usernamePassword(credentialsId: 'testgithubcred', usernameVariable: 'user', passwordVariable: 'pass')]) {
+        withCredentials(bindings: [usernamePassword(credentialsId: 'testgithubcred', usernameVariable: 'user', passwordVariable: 'pass')]) {
           script {
             env.encodedPass=URLEncoder.encode(pass, "UTF-8")
           }
+
           sh 'git push https://${user}:${encodedPass}@github.com/${user}/testpipeline6.git HEAD:develop -f'
         }
+
       }
     }
-	stage('Deliver for release') {
+
+    stage('Deliver for release') {
       when {
         branch 'release*'
       }
@@ -142,12 +153,14 @@ pipeline {
         sh 'git tag -a tagName3 -m "test-admin3"'
         sh 'git commit -am "Merged release branch to master"'
         sh 'git merge -s ours release* --allow-unrelated-histories'
-		 withCredentials(bindings: [usernamePassword(credentialsId: 'testgithubcred', usernameVariable: 'user', passwordVariable: 'pass')]) {
+        withCredentials(bindings: [usernamePassword(credentialsId: 'testgithubcred', usernameVariable: 'user', passwordVariable: 'pass')]) {
           script {
             env.encodedPass=URLEncoder.encode(pass, "UTF-8")
           }
+
           sh 'git push https://${user}:${encodedPass}@github.com/${user}/testpipeline6.git HEAD:master -f'
         }
+
       }
     }
 
